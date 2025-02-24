@@ -1,0 +1,26 @@
+[
+    {
+        "name": "help",
+        "desc": "Menampilkan daftar perintah bot",
+        "details": "",
+        "handler": "./commands/help.js"
+    },
+    {
+        "name": "about",
+        "desc": "Menampilkan informasi tentang bot",
+        "details": "",
+        "handler": "./commands/about.js"
+    },
+    {
+        "name": "joke",
+        "desc": "Mengirimkan joke random",
+        "details": "",
+        "handler": "./commands/joke.js"
+    },
+    {
+        "name": "all",
+        "desc": "tag everyone",
+        "details": "",
+        "handler": "./commands/task/everyone.js"
+    }
+]
