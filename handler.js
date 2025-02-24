@@ -15,7 +15,9 @@ module.exports = async (message, client) => {
 
     let command, groupPath;
     for (const group of routes) {
-        command = group.commands.find(cmd => commandText === cmd.name);
+        command = group.commands.find(cmd =>
+            commandText === cmd.name || (cmd.alias && commandText === cmd.alias)
+        );
         if (command) {
             groupPath = group.path;
             break;

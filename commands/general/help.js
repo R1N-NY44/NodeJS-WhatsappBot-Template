@@ -10,7 +10,8 @@ module.exports = async (message, client) => {
     routes.forEach(group => {
         response += `\n*${group.group}* - ${group.desc}\n`;
         group.commands.forEach(cmd => {
-            response += `  🔹 *${prefix}${cmd.name}* - ${cmd.desc}\n`;
+            const commandText = cmd.alias ? `${prefix}${cmd.name} / ${prefix}${cmd.alias}` : `${prefix}${cmd.name}`;
+            response += `  🔹 *${commandText}* - ${cmd.desc}\n`;
         });
     });
     response += "\n\n📝 *Cara menggunakan perintah:*";

@@ -6,11 +6,13 @@
         "commands": [
             {
                 "name": "help",
+                "alias": "h",
                 "desc": "Menampilkan daftar perintah bot",
                 "handler": "help.js"
             },
             {
                 "name": "about",
+                "alias": "i",
                 "desc": "Menampilkan informasi tentang bot",
                 "handler": "about.js"
             }
@@ -23,6 +25,7 @@
         "commands": [
             {
                 "name": "joke",
+                "alias": "jk",
                 "desc": "Mengirimkan joke random",
                 "handler": "joke.js"
             }
@@ -35,8 +38,15 @@
         "commands": [
             {
                 "name": "all",
+                "alias": "everyone",
                 "desc": "Tag everyone",
                 "handler": "everyone.js"
+            },
+            {
+                "name": "sticker",
+                "alias": "st",
+                "desc": "Membuat sticker dari gambar atau video",
+                "handler": "sticker.js"
             }
         ]
     }
