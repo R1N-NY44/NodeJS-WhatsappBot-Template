@@ -1,39 +1,42 @@
 [
     {
-        "group": "General",
+        "group": "📖 General",
         "desc": "Perintah umum untuk informasi dasar",
+        "path": "general",
         "commands": [
             {
                 "name": "help",
                 "desc": "Menampilkan daftar perintah bot",
-                "handler": "./commands/help.js"
+                "handler": "help.js"
             },
             {
                 "name": "about",
                 "desc": "Menampilkan informasi tentang bot",
-                "handler": "./commands/about.js"
+                "handler": "about.js"
             }
         ]
     },
     {
-        "group": "Fun",
+        "group": "🎉 Fun",
         "desc": "Perintah hiburan dan lelucon",
+        "path": "fun",
         "commands": [
             {
                 "name": "joke",
                 "desc": "Mengirimkan joke random",
-                "handler": "./commands/joke.js"
+                "handler": "joke.js"
             }
         ]
     },
     {
-        "group": "Task",
+        "group": "📑 Task",
         "desc": "Perintah untuk tugas otomatisasi",
+        "path": "task",
         "commands": [
             {
                 "name": "all",
                 "desc": "Tag everyone",
-                "handler": "./commands/task/everyone.js"
+                "handler": "everyone.js"
             }
         ]
     }
