@@ -1,12 +1,3 @@
-// module.exports = async (message, client) => {
-//     const jokes = [
-//         "Kenapa programmer selalu pakai kacamata? Karena mereka nggak bisa C# 🤓",
-//         "Kenapa JavaScript suka bercanda? Karena dia nggak punya tipe yang jelas 😂",
-//         "Kenapa komputer suka hujan? Karena ada banyak *cloud* ☁️"
-//     ];
-//     const joke = jokes[Math.floor(Math.random() * jokes.length)];
-//     await message.reply(joke);
-// };
 const axios = require("axios");
 
 module.exports = async (message, client) => {
