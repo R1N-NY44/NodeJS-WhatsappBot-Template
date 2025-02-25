@@ -10,5 +10,9 @@ So what special from this template ? I alr make routing feature that will help u
 
 and this for file stucture
 
-
 ![image](https://github.com/user-attachments/assets/04540efd-62dd-4ed8-97f7-8f7bf82797b6)
+
+preview
+
+![image](https://github.com/user-attachments/assets/719e456e-4bc6-4bcb-8f2c-702212d15d8c)
+
