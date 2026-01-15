@@ -1,6 +1,7 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 const messageHandler = require('./handler'); // Import handler
+const startReminderScheduler = require("./commands/task/reminder/scheduler.js");
 
 const client = new Client({
     puppeteer: {
@@ -17,6 +18,7 @@ client.on('qr', (qr) => {
 // Show ready message
 client.on('ready', () => {
     console.log('Bot siap dan terhubung!');
+    startReminderScheduler(client);
 });
 
 // Handle incoming message using handler.js

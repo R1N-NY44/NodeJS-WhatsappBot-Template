@@ -47,6 +47,18 @@
                 "alias": "st",
                 "desc": "Membuat sticker dari gambar atau video",
                 "handler": "sticker.js"
+            },
+            {
+                "name": "line-sticker",
+                "alias": "lst",
+                "desc": "Membuat sticker dari id sticker Line atau dengan url sticker itu sendiri",
+                "handler": "line-sticker.js"
+            },
+            {
+                "name": "reminder",
+                "alias": "rm",
+                "desc": "Membuat pengingat dari pesan yang direply dan mengirim ulang di waktu yang ditentukan `?reminder DD/MM/YYYY/HH.mm.ss`",
+                "handler": "reminder/reminder.js"
             }
         ]
     }

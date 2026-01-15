@@ -11,7 +11,9 @@ module.exports = async (message, client) => {
 
     // Only process message that starts with the prefix
     if (!text.startsWith(PREFIX)) return;
-    const commandText = text.slice(PREFIX.length).toLowerCase();
+    // const commandText = text.slice(PREFIX.length).toLowerCase();
+    const commandText = text.slice(PREFIX.length).split(/\s+/)[0].toLowerCase();
+
 
     let command, groupPath;
     for (const group of routes) {

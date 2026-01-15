@@ -1,112 +1,66 @@
-// module.exports = async (message, client) => {
-//     try {
-//         // Get chat info and log it
-//         const chat = await message.getChat();
-//         console.log('Chat info:', {
-//             id: chat.id,
-//             isGroup: chat.isGroup,
-//             name: chat.name
-//         });
+// Map untuk menyimpan data per grup
+const cooldownMap = new Map();
+const COOLDOWN = 30 * 60 * 1000; // 30 menit
+const MAX_USER_PER_GROUP = 3;
 
-//         // Check if it's a group message
-//         if (!chat.isGroup) {
-//             console.log('Not a group message:', chat);
-//             await message.reply('⚠️ Perintah ini hanya dapat digunakan dalam grup!');
-//             return;
-//         }
+module.exports = async (message) => {
+    const chat = await message.getChat();
 
-//         // Log participants
-//         console.log('Participants:', chat.participants.length);
+    // Pastikan hanya di grup
+    if (!chat.isGroup) {
+        await message.reply("⚠️ Fitur ini hanya bisa digunakan di grup.");
+        return;
+    }
 
-//         // Format mention list with names
-//         let mentions = [];
-//         let text = '🔔 *Pengumuman untuk semua anggota!*\n\n';
+    const groupId = chat.id._serialized;
+    const userId = message.author || message.from; // ID pengirim
+    const now = Date.now();
 
-//         for (let participant of chat.participants) {
-//             // Log each participant for debugging
-//             console.log('Processing participant:', participant.id.user);
-            
-//             // Add to mentions array
-//             mentions.push(participant.id._serialized);
-//             // Add to text with @mention format
-//             text += `@${participant.id.user} `;
-//         }
+    let groupData = cooldownMap.get(groupId);
 
-//         console.log('Sending message with mentions:', mentions.length);
+    // Jika belum ada data atau cooldown sudah habis, reset
+    if (!groupData || now - groupData.startTime > COOLDOWN) {
+        groupData = {
+            startTime: now,
+            users: new Set(), // kumpulan user unik yang sudah pakai
+        };
+        cooldownMap.set(groupId, groupData);
+    }
 
-//         // Send message with mentions
-//         await chat.sendMessage(text, {
-//             mentions: mentions
-//         });
+    // Cek apakah user sudah pernah pakai dalam periode ini
+    if (groupData.users.has(userId)) {
+        await message.reply("⏳ Kamu sudah menggunakan command ini dalam 30 menit terakhir di grup ini.");
+        return;
+    }
 
-//     } catch (error) {
-//         console.error('Detailed error in everyone command:', error);
-//         await message.reply('⚠️ Terjadi kesalahan saat mention semua anggota.');
-//     }
-// };
+    // Jika sudah mencapai batas 5 user, tolak duluan
+    if (groupData.users.size >= MAX_USER_PER_GROUP) {
+        const minutesLeft = Math.ceil((groupData.startTime + COOLDOWN - now) / 60000);
+        await message.reply(
+            `🚫 Batas penggunaan perintah tercapai (${MAX_USER_PER_GROUP}/${MAX_USER_PER_GROUP}).\n\n Hanya ${MAX_USER_PER_GROUP} pengguna yang bisa memakai command ini setiap 30 menit dalam grup.\n\nCoba lagi dalam ${minutesLeft} menit.`
+        );
+        return;
+    }
 
-module.exports = async (message, client) => {
     try {
-        // Get chat info and log it
-        const chat = await message.getChat();
-        console.log('Chat info:', {
-            id: chat.id,
-            isGroup: chat.isGroup,
-            name: chat.name
-        });
+        const mentions = [];
+        let text = "📢 *Panggilan untuk semua anggota grup!* \n";
 
-        // Check if it's a group message
-        // if (!chat.isGroup) {
-        //     console.log('Not a group message:', chat);
-        //     await message.reply('⚠️ Perintah ini hanya dapat digunakan dalam grup!');
-        //     return;
-        // }
+        for (const participant of chat.participants) {
+            const contact = await message.client.getContactById(participant.id._serialized);
+            mentions.push(contact);
+            text += `@${participant.id.user} `;
+        }
 
-        // Log participants
-        // console.log('=================================');
-        // console.log('Participants:', await chat.GroupMention);
-        // console.log('=================================');
+        // Kirim pesan
+        await chat.sendMessage(text.trim(), { mentions });
 
-        console.log('Not a group message:', chat);
-        console.log('Not a group message:', message.getChat().participants());
-        // console.log('Not a group message:', chat.lastMessage.id);
+        // Tambahkan user ke daftar pengguna
+        groupData.users.add(userId);
+        cooldownMap.set(groupId, groupData);
 
-        // if (message.from.endsWith('@g.us')) {
-        //     message.reply(`
-        //         *Group Details*
-        //         Name: ${chat.name}
-        //         Description: ${chat.description}
-        //         Created At: ${chat.createdAt.toString()}
-        //         Created By: ${chat.owner.user}
-        //         Participant count: ${chat.participants.length}
-        //     `);
-        // } else {
-        //     message.reply('This command can only be used in a group!');
-        // }
-
-        // // Format mention list with names
-        // let mentions = [];
-        // let text = '🔔 *Pengumuman untuk semua anggota!*\n\n';
-
-        // for (let participant of chat.participants) {
-        //     // Log each participant for debugging
-        //     console.log('Processing participant:', participant.id.user);
-
-        //     // Add to mentions array
-        //     mentions.push(participant.id._serialized);
-        //     // Add to text with @mention format
-        //     text += `@${participant.id.user} `;
-        // }
-
-        // console.log('Sending message with mentions:', mentions.length);
-
-        // // Send message with mentions
-        // await chat.sendMessage(text, {
-        //     mentions: mentions
-        // });
-
-    } catch (error) {
-        console.error('Detailed error in everyone command:', error);
-        await message.reply('⚠️ Terjadi kesalahan saat mention semua anggota. /n Error: ' + chat);
+    } catch (err) {
+        console.error("❌ Error saat memanggil semua anggota:", err);
+        await message.reply("⚠️ Terjadi kesalahan saat memanggil semua anggota.");
     }
 };

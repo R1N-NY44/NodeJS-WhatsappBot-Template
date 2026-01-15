@@ -16,7 +16,7 @@ module.exports = async (message) => {
             const sticker = new MessageMedia(media.mimetype, media.data, media.filename);
             await chat.sendMessage(sticker, {
                 sendMediaAsSticker: true,
-                stickerName: `by ${message._data.notifyName}`,
+                stickerName: `Made By ${message._data.notifyName}`,
                 // stickerAuthor: message._data.notifyName,
             });
 
